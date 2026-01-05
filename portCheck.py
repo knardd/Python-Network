@@ -16,6 +16,7 @@ else:
     
 s.close()
 
+
 ip = input("Masukkan IP: ")
 
 response = os.system(f"ping -n 1 {ip}")
