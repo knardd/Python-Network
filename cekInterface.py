@@ -13,11 +13,11 @@ command = [
     "/ip address print",
     "/ip dhcp-client add interface=ether1",
     "/ip address print",
-    "/ip pool add name=pool-lan ranges=192.168.32.10-192.168.32.100"
-    "/ip dhcp-server add name=dhcp-lan interface=ether2 address-pool=pool-lan disabled=no"
-    "/ip dhcp-server network add address=192.168.32.0/24 gateway=192.168.32.1 dns-server=8.8.8.8"
+    "/ip pool add name=pool-lan ranges=192.168.32.10-192.168.32.100",
+    "/ip dhcp-server add name=dhcp-lan interface=ether2 address-pool=pool-lan disabled=no",
+    "/ip dhcp-server network add address=192.168.32.0/24 gateway=192.168.32.1 dns-server=8.8.8.8",
     "/ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade",
-    "/ping 8.8.8.8",
+    "/ping 8.8.8.8 count=3",
     "/system backup save name=backup-awal",
     "/export file=config-awal",
 ]
@@ -59,6 +59,15 @@ def run_ssh_config():
             print(output)
         if error:
             print(error)
+
+    print("[*] Downloading backup via SCP...")
+
+    scp = SCPClient(ssh.get_transport())
+    scp.get("backup-awal.backup")
+    scp.get("config-awal.rsc")
+    scp.close()
+
+    print("[+] Backup & export berhasil di-download")
         
     ssh.close()
     print ("SSH connection closed")
