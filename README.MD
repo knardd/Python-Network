@@ -42,3 +42,9 @@ Beberapa topik yang dipelajari dalam repository ini antara lain:
 - socket
 - os
 - time
+
+---
+
+## Hasil
+
+![Hasil](screenshots/Hasil.png)

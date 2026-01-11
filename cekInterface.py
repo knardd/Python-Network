@@ -6,15 +6,17 @@ from scp import SCPClient
 
 ip = "192.168.32.1"
 username = "admin"
-password = "1"
+password = ""
 port = 22
 
 command = [
     "/ip address print",
-    "/ip dhcp-client add interface=ether1",
+    "/ip address add address=192.168.0.168/24 interface=ether1",
+    "/ip route add gateway=192.168.0.200",
+    "/ip dns set servers=8.8.8.8,1.1.1.1 allow-remote-request=yes",
     "/ip address print",
-    "/ip pool add name=pool-lan ranges=192.168.32.10-192.168.32.100",
-    "/ip dhcp-server add name=dhcp-lan interface=ether2 address-pool=pool-lan disabled=no",
+    "/ip pool add name=pool-lan ranges=192.168.32.5-192.168.32.100",
+    "/ip dhcp-server add name=dhcp-lan interface=ether4 address-pool=pool-lan disabled=no",
     "/ip dhcp-server network add address=192.168.32.0/24 gateway=192.168.32.1 dns-server=8.8.8.8",
     "/ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade",
     "/ping 8.8.8.8 count=3",
@@ -42,6 +44,8 @@ def ssh_port_check(ip, port):
 
 #SSH Config
 def run_ssh_config():
+    time.sleep(2)
+
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip, username=username, password=password, port=port, timeout=5)
