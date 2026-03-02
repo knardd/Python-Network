@@ -60,6 +60,7 @@ try:
     # 8. Ping
     ping_res = api.get_binary_resource('/').call('ping', {'address': '8.8.8.8', 'count': '3'})
     print(ping_res)
+    
     print("Semua konfigurasi berhasil diterapkan!")
 
 except Exception as e:
